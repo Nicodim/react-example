@@ -5,13 +5,14 @@ import {FormPostsProps} from "./types";
 
 const PostForm = ({ create }: FormPostsProps) => {
     const [post, setPost] = useState({title: '', body: ''})
+
     const addNewPost = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         const newPost  = {...post, id: Date.now()}
         create(newPost)
         setPost({title: '', body: ''})
-        console.log('dfdfdf')
     }
+
     return (
         <form>
             <Input type="text" placeholder='' value={post.title} onChange={e => setPost({...post, title: e.target.value})}/>
