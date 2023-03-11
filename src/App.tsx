@@ -4,6 +4,8 @@ import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import {postProps} from "./types/listItem";
 import PostFilter from "./components/PostFilter";
+import MyModal from "./components/MyModal";
+import Button from "./components/commonConponents/basicComponents/button";
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -33,6 +35,7 @@ function App() {
     const [filter, setFilter] = useState({
         sort: '', query: ''
     })
+    const [visibleModal, setVisibleModal] = useState<boolean>( false );
 
     const sortedPosts = useMemo(() => {
         console.log('OTRABOTALO')
@@ -49,6 +52,7 @@ function App() {
 
     const createPost = (newPost: postProps) => {
         setPosts([...posts, newPost])
+        setVisibleModal(false)
     }
 
     const removePost = (post: postProps) => {
@@ -59,7 +63,10 @@ function App() {
         <div className="App">
             <GlobalStyles/>
             {/*<Counter/>*/}
-            <PostForm create={createPost}/>
+            <Button onClick={() => setVisibleModal(true)}>create user</Button>
+            <MyModal visible = {visibleModal} setVisible={setVisibleModal}>
+                <PostForm create={createPost}/>
+            </MyModal>
             <PostFilter filter={filter} setFilter={setFilter}/>
             <PostList remove={removePost} items={sortedAndSearchedPosts}/>
 
