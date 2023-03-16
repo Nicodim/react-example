@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {createGlobalStyle} from "styled-components";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
@@ -6,6 +6,7 @@ import {postProps} from "./types/listItem";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/MyModal";
 import Button from "./components/commonConponents/basicComponents/button";
+import {usePosts} from "./hooks/usePosts";
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -36,19 +37,7 @@ function App() {
         sort: '', query: ''
     })
     const [visibleModal, setVisibleModal] = useState<boolean>( false );
-
-    const sortedPosts = useMemo(() => {
-        console.log('OTRABOTALO')
-        if (filter.sort) {
-            // @ts-ignore
-            return [...posts.sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))]
-        }
-        return posts
-    }, [filter.sort, posts])
-
-    const sortedAndSearchedPosts = useMemo(() => {
-        return sortedPosts.filter(el => el.title.toLowerCase().includes(filter.query))
-    }, [filter.query, sortedPosts])
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
     const createPost = (newPost: postProps) => {
         setPosts([...posts, newPost])
